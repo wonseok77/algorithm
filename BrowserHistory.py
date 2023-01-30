@@ -18,42 +18,46 @@
 # 1 <= step <= 100
 # homepage와 url은 '.'를 포함한 lower case 영어 문자로 구성되어 있다.
 # visit, back 그리고 forward는 최대 5000번의 호출이 있을 수 있다.
-
+class ListNode(object):
+    def __init__(self, val = 0, next=None, prev=None):
+        self.val = val
+        self.next = next
+        self.prev = prev
+        
 class BrowserHistory(object):
     def __init__(self, homepage):
-        """
-        :type homepage str
-        """
+        self.head = self.current = ListNode(val=homepage)
         
     def visit(self, url):
-        """
-        :type url: str
-        :rtype: None
-        """
+        self.current.next = ListNode(val=url, prev=self.current)
+        self.current = self.current.next
+        return None
+
     def back(self, steps):
-        """
-        :type steps: int
-        :rtype: str
-        """
+        while steps > 0 and self.current.prev != None:
+            steps -= 1
+            self.current = self.current.prev
+        return self.current.val
+
     def forward(self, steps):
-        """
-        :type steps: int
-        :rtype: str
-        """
+        while steps>0 and self.current.next != None:
+            steps -= 1
+            self.current = self.current.next
+        return self.current.val
 
 
 ### input
 browserHistory = BrowserHistory("leetcode.com")
-browserHistory.visit("google.com")
-browserHistory.visit("facebook.com")
-browserHistory.visit("youtube.com")
-browserHistory.back(1)
-browserHistory.back(1)
-browserHistory.forward(1)
-browserHistory.visit("Linkedin.com")
-browserHistory.forward(2)
-browserHistory.back(2)
-browserHistory.back(7)
+print(browserHistory.visit("google.com"))
+print(browserHistory.visit("facebook.com"))
+print(browserHistory.visit("youtube.com"))
+print(browserHistory.back(1))
+print(browserHistory.back(1))
+print(browserHistory.forward(1))
+print(browserHistory.visit("Linkedin.com"))
+print(browserHistory.forward(2))
+print(browserHistory.back(2))
+print(browserHistory.back(7))
 
 ### output
 # None
